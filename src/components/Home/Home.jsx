@@ -1,7 +1,13 @@
 import React from "react";
+import HeroSection from "./../HeroSection/HeroSection";
 
 const Home = () => {
-  return <div>This is Home Page</div>;
+  return (
+    <div>
+      <HeroSection />
+      <h2 className="text-2xl font-bold text-center my-2">Recent Products</h2>
+    </div>
+  );
 };
 
 export default Home;
