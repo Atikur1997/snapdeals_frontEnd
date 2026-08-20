@@ -1,20 +1,26 @@
 import { NavLink } from "react-router";
 import { FcGoogle } from "react-icons/fc";
+import { use, useState } from "react";
 import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
-import { use, useState } from "react";
 import { AuthContext } from "../../context/AuthContext/AuthContext";
 
-const Login = () => {
+const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const {user,googleLogin}= use(AuthContext)
+  const [confirmPassword, setConfirmPassword] = useState("false");
+
+  const { googleLogin, user } = use(AuthContext);
   const handleGoogleLogin = () => {
     googleLogin().then((result) => {
       console.log(result.user);
-    })
-  }
+    });
+  };
+
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
+  };
+  const handleToggleConfirmPassword = () => {
+    setConfirmPassword(!confirmPassword);
   };
   return (
     <div className="min-h-screen bg-[linear-gradient(130deg,#FFE6FD_0%,#E0F8F5_100%)] flex justify-center items-center px-4 rounded-4xl my-3">
@@ -24,7 +30,7 @@ const Login = () => {
           <h1 className="text-4xl font-bold">
             Snap<span className="gradient-text">Deals</span>
           </h1>
-          <p className="text-gray-500 mt-2">Welcome back! Login to continue.</p>
+          <p className="text-gray-500 mt-2">Welcome ! SignUp to continue.</p>
         </div>
 
         {/* Form */}
@@ -45,6 +51,7 @@ const Login = () => {
               placeholder="Enter your password"
               className="input w-full mt-2 border border-gray-300 focus:outline-none focus:border-[#632EE3]"
             />
+
             {showPassword ? (
               <FaRegEyeSlash
                 className="absolute right-3 text-xl text-[#A1A1AA] top-10"
@@ -57,15 +64,29 @@ const Login = () => {
               />
             )}
           </div>
-
-          <div className="text-right">
-            <a href="#" className="text-sm text-[#632EE3] hover:underline">
-              Forgot Password?
-            </a>
+          {/* Confirm Password */}
+          <div className="relative">
+            <label className="font-semibold">Confirm Password</label>
+            <input
+              type={confirmPassword ? "text" : "password"}
+              placeholder="Confirm your password"
+              className="input w-full mt-2 border border-gray-300 focus:outline-none focus:border-[#632EE3]"
+            />
+            {confirmPassword ? (
+              <FaRegEyeSlash
+                className="absolute right-3 text-xl text-[#A1A1AA] top-10"
+                onClick={handleToggleConfirmPassword}
+              />
+            ) : (
+              <FaRegEye
+                className="absolute right-3 text-xl text-[#A1A1AA] top-10"
+                onClick={handleToggleConfirmPassword}
+              />
+            )}
           </div>
 
-          <button  className="btn w-full text-white border-none bg-[linear-gradient(110deg,#632EE3,#9F62F2)]">
-            Login
+          <button className="btn w-full text-white border-none bg-[linear-gradient(110deg,#632EE3,#9F62F2)]">
+            Register
           </button>
         </form>
 
@@ -80,12 +101,12 @@ const Login = () => {
 
         {/* Register */}
         <p className="text-center mt-6 text-gray-600">
-          Don't have an account?{" "}
+          Already have an account?{" "}
           <NavLink
-            to="/register"
+            to="/login"
             className="font-semibold text-[#632EE3] hover:underline"
           >
-            Register
+            Login
           </NavLink>
         </p>
       </div>
@@ -93,4 +114,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
