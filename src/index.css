@@ -18,3 +18,15 @@
   font-optical-sizing: auto;
   font-style: normal;
 }
+
+.btn-primary{
+  @apply 
+  bg-gradient-to-r from-[#632EE3] to-[#9F62F2]
+   text-white
+    py-2 
+    px-4 
+    rounded-md 
+  hover:bg-gradient-to-r hover:from-[#9F62F2] hover:to-[#632EE3]
+  hover:opacity-80
+
+}

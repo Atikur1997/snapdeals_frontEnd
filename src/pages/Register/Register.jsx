@@ -13,6 +13,19 @@ const Register = () => {
   const handleGoogleLogin = () => {
     googleLogin().then((result) => {
       console.log(result.user);
+      fetch("http://localhost:5000/users/google", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(result.user),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("data after saving : ", data);
+        }).catch((error) => {
+          alert(error.message);
+        });
     });
   };
 

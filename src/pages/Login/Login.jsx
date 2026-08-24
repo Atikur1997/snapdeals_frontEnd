@@ -11,6 +11,22 @@ const Login = () => {
   const handleGoogleLogin = () => {
     googleLogin().then((result) => {
       console.log(result.user);
+      const newUser={
+        name:result.user.displayName,
+        email:result.user.email,
+        photo:result.user.photoURL
+      }
+      //create user in dataBase 
+      fetch("http://localhost:5000/users/google/signin",{
+        method:"POST",
+        headers:{
+          "content-type":"application/json"
+        },
+        body:JSON.stringify(newUser)
+      }).then(res=>res.json()).then(data=>{
+        console.log("data after saving : ",data);
+      })
+
     })
   }
   const handleTogglePassword = () => {
