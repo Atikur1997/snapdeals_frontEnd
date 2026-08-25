@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import left from "../../assets/bg-hero-left.png";
 import right from "../../assets/bg-hero-right.png";
 import { CiSearch } from "react-icons/ci";
+import { NavLink } from "react-router";
 
 const HeroSection = () => {
   const motherVariants = {
@@ -126,7 +127,8 @@ const HeroSection = () => {
             my-10
           "
         >
-          <button
+<NavLink to="/all-products">
+            <button
             className="
               btn
               w-[80%]
@@ -138,6 +140,7 @@ const HeroSection = () => {
           >
             Watch All Products
           </button>
+</NavLink>
 
           <button
             className="

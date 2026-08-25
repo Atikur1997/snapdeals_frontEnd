@@ -1,22 +1,21 @@
-import { use, useState } from "react";
+import { use, } from "react";
 import { NavLink } from "react-router";
 import { AuthContext } from "../../context/AuthContext/AuthContext";
 
 const Navbar = () => {
   const { user, logOut } = use(AuthContext);
 
-  // Profile image load হয়েছে কিনা
-  const [imageError, setImageError] = useState(false);
 
-  console.log("NAVBAR USER:", user);
-  console.log("NAVBAR PHOTO:", user?.photoURL);
+
+
+
 
   // Google profile photo URL
   const profilePhoto = user?.photoURL
     ? user.photoURL.replace("=s96-c", "=s200-c")
     : null;
 
-  // User এর নামের প্রথম অক্ষর
+ 
   const userInitial =
     user?.displayName?.charAt(0).toUpperCase() || "U";
 
@@ -137,23 +136,12 @@ const Navbar = () => {
             >
 
               {/* Profile Image */}
-              {profilePhoto && !imageError ? (
+              {profilePhoto ? (
                 <img
                   src={profilePhoto}
                   alt={user.displayName || "User"}
                   className="w-10 h-10 rounded-full object-cover"
-                  onLoad={() => {
-                    console.log("✅ PROFILE IMAGE LOADED");
-                  }}
-                  onError={(event) => {
-                    console.log("❌ PROFILE IMAGE FAILED");
-                    console.log(
-                      "Image URL:",
-                      event.currentTarget.src
-                    );
 
-                    setImageError(true);
-                  }}
                 />
               ) : (
                 /* ================= FALLBACK AVATAR ================= */
@@ -178,7 +166,7 @@ const Navbar = () => {
                 <div className="flex items-center gap-3">
 
                   {/* Small avatar */}
-                  {profilePhoto && !imageError ? (
+                  {profilePhoto ? (
                     <img
                       src={profilePhoto}
                       alt={user.displayName || "User"}
