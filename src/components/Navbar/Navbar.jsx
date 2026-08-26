@@ -128,7 +128,7 @@ const Navbar = () => {
           <>
             {/* ================= USER BUTTON ================= */}
             <button
-              className="btn btn-outline btn-info p-1"
+              className="btn btn-outline btn-info border-0 p-1"
               popoverTarget="user-popover"
               style={{
                 anchorName: "--user-anchor",
