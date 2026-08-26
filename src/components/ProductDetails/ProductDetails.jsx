@@ -1,4 +1,4 @@
-import React, { use, useRef } from "react";
+import React, { use, useEffect, useRef, useState } from "react";
 import { useLoaderData } from "react-router";
 import { AuthContext } from "../../context/AuthContext/AuthContext";
 import { useForm } from "react-hook-form";
@@ -6,6 +6,8 @@ import Swal from "sweetalert2";
 
 const ProductDetails = () => {
   const {_id} = useLoaderData();
+  const ProductID=_id
+  const[bids,setBids]=useState([]);
 
   const bidModalRef = useRef(null);
   const { user } = use(AuthContext);
@@ -19,12 +21,12 @@ const ProductDetails = () => {
     bidModalRef.current.showModal();
   };
 
+
   const handleformData = (data) => {
     const name = data.buyerName;
     const email = data.buyerEmail;
     const phone = data.phone;
     const price = data.bid;
-    console.log(`name: ${name} , email: ${email}, phone: ${phone}, price: ${price} productId: ${_id}`);
     const newBid={
       product: _id,
       buyer_name: name,
@@ -54,21 +56,29 @@ const ProductDetails = () => {
     })
   };
 
+
   const submitHandler =handleSubmit(handleformData)
+
+  useEffect(()=>{
+    fetch(`http://localhost:5000/bids/byproduct/${ProductID}`).then(res=>res.json()).then(data=>{console.log(data)
+      setBids(data)
+     
+    })
+  },[ProductID])
   return (
     <div>
-      this is product details: {_id}
+      this is product details: {ProductID}
       <div>
         {/* product info  */}
-        <div></div>
+        <div>
+
+        </div>
 
         <div>
           <button onClick={handleBidModal} className="btn btn-primary">
             I want to buy this Product
           </button>
-        </div>
-
-        <dialog
+                  <dialog
           ref={bidModalRef}
           id="my_modal_5"
           className="modal modal-bottom sm:modal-middle"
@@ -147,8 +157,13 @@ const ProductDetails = () => {
             </div>
           </div>
         </dialog>
+        </div>
+
+
       </div>
-      <div>{/* Bids for this products  */}</div>
+      <div>{/* Bids for this products  */}
+        <h3 className="text-2xl font-bold text-center my-2">Bids for this product: <span className="gradient-text">{bids.length}</span></h3>
+      </div>
     </div>
   );
 };
