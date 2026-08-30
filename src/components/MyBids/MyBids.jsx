@@ -10,8 +10,23 @@ const MyBids = () => {
     console.log(user);
     const [bids,setBids]=useState([])
 
-
-
+    const handleDelete = (id) => {
+        fetch(`http://localhost:5000/bids/${id}`, {
+          method: "DELETE",
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log("Delete response:", data);
+            if (data.deletedCount > 0) {
+              setBids((previousBids) =>
+                previousBids.filter(
+                  (bid) => String(bid._id) !== String(id)
+                )
+              );
+            }
+          });
+      };
+      
 
 
     useEffect(()=>{
@@ -85,7 +100,7 @@ console.log(bids);
         </td>
         <td>৳{bid.bid_price}</td>
         <th className="flex flex-col md:flex-row justify-center items-center gap-2">
-          <button className="btn btn-outline btn-error ">Delete Bid</button>
+          <button onClick={() => handleDelete(bid._id)} className="btn btn-outline btn-error ">Delete Bid</button>
           <button className="btn btn-outline btn-info ">Update Bid</button>
         </th>
       </tr>)}
