@@ -34,6 +34,8 @@ const MyBids = () => {
           })
         );
 
+        console.log("Bids with product:", bidsWithProduct);
+
         setBids(bidsWithProduct);
       })
       .catch((error) => {
@@ -60,7 +62,7 @@ const MyBids = () => {
         })
           .then((res) => res.json())
           .then((data) => {
-           
+            console.log("Delete response:", data);
 
             if (data.deletedCount > 0) {
               setBids((previousBids) =>
@@ -84,6 +86,7 @@ const MyBids = () => {
               title: "Error!",
               text: "Something went wrong while deleting the bid.",
               icon: "error",
+              confirmButtonText: "OK",
             });
           });
       }
@@ -101,35 +104,40 @@ const MyBids = () => {
   };
 
   // =================================
-  // UPDATE BID
+  // UPDATE BID + MOBILE NUMBER
   // =================================
 
   const handleUpdateBid = (e) => {
     e.preventDefault();
 
     const newBidPrice = Number(e.target.bidPrice.value);
+    const newBuyerContact = e.target.buyerContact.value;
 
     fetch(`http://localhost:5000/bids/${selectedBid._id}`, {
       method: "PUT",
+
       headers: {
         "content-type": "application/json",
       },
+
       body: JSON.stringify({
         bid_price: newBidPrice,
+        buyer_contact: newBuyerContact,
       }),
     })
       .then((res) => res.json())
       .then((data) => {
-      
+        console.log("Update response:", data);
 
         if (data.modifiedCount > 0) {
-          // Update the table immediately
+          // Update UI immediately
           setBids((previousBids) =>
             previousBids.map((bid) =>
               bid._id === selectedBid._id
                 ? {
                     ...bid,
                     bid_price: newBidPrice,
+                    buyer_contact: newBuyerContact,
                   }
                 : bid
             )
@@ -144,14 +152,14 @@ const MyBids = () => {
           // Success alert
           Swal.fire({
             title: "Success!",
-            text: "Your bid has been updated successfully.",
+            text: "Your bid information has been updated successfully.",
             icon: "success",
             confirmButtonText: "OK",
           });
         } else {
           Swal.fire({
             title: "Update Failed!",
-            text: "Your bid was not updated.",
+            text: "No changes were made.",
             icon: "error",
             confirmButtonText: "OK",
           });
@@ -180,6 +188,7 @@ const MyBids = () => {
         Total Bids: {bids.length}
       </p>
 
+
       {/* =================================
           TABLE
       ================================= */}
@@ -192,6 +201,7 @@ const MyBids = () => {
 
           <thead>
             <tr>
+
               <th className="text-center">
                 SL No.
               </th>
@@ -211,8 +221,10 @@ const MyBids = () => {
               <th className="text-center">
                 Action
               </th>
+
             </tr>
           </thead>
+
 
           {/* TABLE BODY */}
 
@@ -228,7 +240,8 @@ const MyBids = () => {
                   {index + 1}
                 </th>
 
-                {/* USER */}
+
+                {/* BUYER */}
 
                 <td>
 
@@ -250,6 +263,7 @@ const MyBids = () => {
 
                     </div>
 
+
                     <div>
 
                       <div className="font-bold">
@@ -261,6 +275,7 @@ const MyBids = () => {
                   </div>
 
                 </td>
+
 
                 {/* SELLER + PRODUCT */}
 
@@ -280,6 +295,7 @@ const MyBids = () => {
 
                     </div>
 
+
                     {/* SELLER INFO */}
 
                     <div>
@@ -298,6 +314,7 @@ const MyBids = () => {
 
                 </td>
 
+
                 {/* BID PRICE */}
 
                 <td>
@@ -307,6 +324,7 @@ const MyBids = () => {
                   </span>
 
                 </td>
+
 
                 {/* ACTION */}
 
@@ -322,6 +340,7 @@ const MyBids = () => {
                     >
                       Delete Bid
                     </button>
+
 
                     {/* UPDATE */}
 
@@ -346,8 +365,9 @@ const MyBids = () => {
 
       </div>
 
+
       {/* =================================
-          UPDATE BID MODAL
+          UPDATE MODAL
       ================================= */}
 
       <dialog
@@ -360,6 +380,7 @@ const MyBids = () => {
           <h3 className="font-bold text-2xl mb-6">
             Update Your Bid
           </h3>
+
 
           {selectedBid && (
 
@@ -382,6 +403,7 @@ const MyBids = () => {
 
               </div>
 
+
               {/* SELLER */}
 
               <div className="mb-4">
@@ -392,16 +414,35 @@ const MyBids = () => {
 
                 <input
                   type="text"
-                  value={
-                    selectedBid.product?.seller_name || ""
-                  }
+                  value={selectedBid.product?.seller_name || ""}
                   readOnly
                   className="input input-bordered w-full mt-2"
                 />
 
               </div>
 
-              {/* CURRENT BID */}
+
+              {/* BUYER PHONE NUMBER */}
+
+              <div className="mb-4">
+
+                <label className="font-semibold">
+                  Buyer Phone Number
+                </label>
+
+                <input
+                  type="text"
+                  name="buyerContact"
+                  defaultValue={selectedBid.buyer_contact || ""}
+                  required
+                  className="input input-bordered w-full mt-2 border-0 shadow-blue-500 shadow-2xl"
+                  placeholder="Enter your mobile number"
+                />
+
+              </div>
+
+
+              {/* CURRENT BID PRICE */}
 
               <div className="mb-4">
 
@@ -417,6 +458,7 @@ const MyBids = () => {
                 />
 
               </div>
+
 
               {/* NEW BID PRICE */}
 
@@ -438,11 +480,12 @@ const MyBids = () => {
 
               </div>
 
+
               {/* BUTTONS */}
 
               <div className="flex justify-end gap-3">
 
-                {/* CLOSE */}
+                {/* CLOSE BUTTON */}
 
                 <button
                   type="button"
@@ -455,7 +498,8 @@ const MyBids = () => {
                   Close
                 </button>
 
-                {/* SUBMIT */}
+
+                {/* SUBMIT BUTTON */}
 
                 <button
                   type="submit"
