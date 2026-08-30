@@ -469,7 +469,7 @@ const handleDelete = (id) => {
                         <p>{productInfo.email}</p>
                       </div>
                     </td>
-                    <th>
+                    <th>  
                       <button className="btn btn-ghost btn-xs">
                         ৳{bid.bid_price}/-
                       </button>
