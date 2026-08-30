@@ -3,18 +3,19 @@ import { useLoaderData } from "react-router";
 import { AuthContext } from "../../context/AuthContext/AuthContext";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
-import { s, td } from "framer-motion/client";
+
 
 const ProductDetails = () => {
   const { _id } = useLoaderData();
   const ProductID = _id;
   const [bids, setBids] = useState([]);
   const [productInfo, setProductInfo] = useState([]);
-
-  const owner = true;
+const { user } = use(AuthContext);
+ const owner = user.email==productInfo?.email;
 
   const bidModalRef = useRef(null);
-  const { user } = use(AuthContext);
+  
+  console.log(user);
   const {
     register,
     formState: { errors },
@@ -68,14 +69,14 @@ const ProductDetails = () => {
     fetch(`http://localhost:5000/bids/byproduct/${ProductID}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        console.log("bid data:",data);
         setBids(data);
       });
 
     fetch(`http://localhost:5000/products/${ProductID}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        console.log("product data",data);
         setProductInfo(data);
       });
   }, [ProductID]);
