@@ -5,6 +5,8 @@ import { CiSearch } from "react-icons/ci";
 import { NavLink } from "react-router";
 
 const HeroSection = () => {
+
+  
   const motherVariants = {
     hidden: {
       opacity: 0,
@@ -31,6 +33,11 @@ const HeroSection = () => {
       },
     },
   };
+const handleSearch=(e)=>{
+  e.preventDefault();
+ 
+  console.log("search button click");
+}
 
   return (
     <motion.div
@@ -103,6 +110,7 @@ const HeroSection = () => {
           />
 
           <CiSearch
+          onClick={handleSearch}
             className="
               btn
               bg-linear-[110deg,#632EE3,#9F62F2]
